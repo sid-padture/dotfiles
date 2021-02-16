@@ -7,18 +7,10 @@ fi
 
 # Set PATH
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
-export PATH="/usr/local/opt/redis/bin:$PATH"
 
 if (( ! ${fpath[(I)/usr/local/share/zsh/site-functions]} )); then
   FPATH=/usr/local/share/zsh/site-functions:$FPATH
 fi
-
-
-# Make python getdefaultlocale work on MacOS
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
 
 # Select the oh-my-zsh and p10k as the zsh settings "base"
 export ZSH="$HOME/.oh-my-zsh"
@@ -60,13 +52,15 @@ alias ohmyzsh="code ~/.oh-my-zsh"
 alias dcd='docker-compose down --remove-orphans'
 alias dclean='docker stop $(docker ps -a -q);docker rm -v $(docker ps -a -q); docker rmi -f $(docker images -q)'
 alias dcu='docker-compose down; docker-compose up'
+alias dcud='docker-compose down; docker-compose up -d'
 alias dcub='docker-compose down; docker-compose up --build'
 alias reload="exec $SHELL -l"
 alias ls="ls -ApCh --group-directories-first --color"
 
-# Add fzf fuzzy matching for ctrl-r
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# # Add fzf fuzzy matching for ctrl-r
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 # Make Pyenv auto de/activate venvs when moving through directories
 if command -v pyenv 1>/dev/null 2>&1; then
@@ -76,14 +70,7 @@ fi
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-# Add git extras to the shell
-source /usr/local/opt/git-extras/share/git-extras/git-extras-completion.zsh
+eval $(ssh-agent) > /dev/null
 
-# Add Homebrew Completions
-if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 
-    autoload -Uz compinit
-    compinit
-  fi
-
+ 
